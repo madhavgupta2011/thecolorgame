@@ -1,0 +1,140 @@
+var colors = generateColor(6);
+var black = [
+"rgb(0, 0, 0)"];
+
+var div = document.querySelectorAll(".square");
+var colorPicked = pickColor();
+var colorDisplay = document.getElementById("col");
+var message = document.querySelector("#message");
+var heading = document.querySelector("h1");
+var button = document.querySelector(".again");
+var easy = document.querySelector("#easy");
+var hard = document.querySelector("#hard");
+var saral = false;
+var kathin = true;
+button.addEventListener("click", function () {
+    if (saral == true)
+    {
+        generateForThree();
+    } else
+
+    {
+        generateForSix();
+    }
+    button.textContent = "NEW COLORS";
+});
+easy.addEventListener("click", function () {
+    generateForThree();
+    disableLower();
+    saral = true;
+    kathin = false;
+    heading.style.background = black;
+    button.textContent = "NEW COLORS";
+
+});
+hard.addEventListener("click", function () {
+    generateForSix();
+    enableLower();
+    saral = false;
+    kathin = true;
+    button.textContent = "NEW COLORS";
+});
+colorDisplay.textContent = colorPicked;
+for (var i = 0; i < div.length; i++)
+{
+    div[i].style.backgroundColor = colors[i];
+    div[i].addEventListener("click", function () {
+        var clickedColor = this.style.backgroundColor;
+        if (colorPicked === clickedColor)
+        {
+            changeColors(clickedColor);
+            heading.style.background = clickedColor;
+            message.textContent = "Correct";
+            button.textContent = "Play Again?";
+        } else
+
+        {
+            this.style.background = "black";
+            message.textContent = "try again";
+        }
+    });
+}
+
+function changeColors(color) {
+    if (saral)
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            div[i].style.backgroundColor = color;
+        }
+        for (var i = 3; i < div.length; i++)
+        {
+            div[i].style.backgroundColor = black;
+            message.textContent = "";
+        }
+    } else
+    {
+        for (var i = 0; i < div.length; i++)
+        {
+            div[i].style.background = color;
+        }
+    }
+}
+function pickColor() {
+    var randomNum = Math.floor(Math.random() * colors.length);
+    return colors[randomNum];
+}
+function generateColor(num) {
+    var arr = [];
+    for (var i = 0; i < num; i++)
+    {
+        arr.push(randomValues());
+    }
+    return arr;
+}
+function randomValues() {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+}
+function generateForThree()
+{
+    colors = generateColor(3);
+    colorPicked = pickColor();
+    colorDisplay.textContent = colorPicked;
+    for (var i = 0; i < 3; i++)
+    {
+        div[i].style.backgroundColor = colors[i];
+    }
+    for (var i = 3; i < div.length; i++)
+    {
+        div[i].style.backgroundColor = black;
+    }
+    heading.style.background = black;
+    message.textContent = "";
+}
+function generateForSix()
+{
+    colors = generateColor(6);
+    colorPicked = pickColor();
+    colorDisplay.textContent = colorPicked;
+    for (var i = 0; i < div.length; i++)
+    {
+        div[i].style.backgroundColor = colors[i];
+    }
+    heading.style.background = black;
+    message.textContent = "";
+}
+function disableLower()
+{
+    div[3].classList.add("noClick");
+    div[4].classList.add("noClick");
+    div[5].classList.add("noClick");
+}
+function enableLower()
+{
+    div[3].classList.remove("noClick");
+    div[4].classList.remove("noClick");
+    div[5].classList.remove("noClick");
+}
